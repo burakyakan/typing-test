@@ -1,16 +1,57 @@
-body{
-    text-align: center;
-    margin-left: 10%;
-    margin-right: 10%;
+body {
+    margin: 0 10%; 
     font-family: Arial, Helvetica, sans-serif;
     background-color: rgb(64, 64, 64);
     color: rgb(245, 244, 242);
-    
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Oyunu dikey eksende tam ortalar */
+    text-align: center;
 }
 
-#text-container{
+#text-container {
+    /* Sihirli Komutlar: Kelimelerin kutularını değil, içindeki metni iki yana yaslar */
     text-align: justify;
-    font-size: 2rem;
-
+    text-align-last: left; /* Son satırın dikdörtgen olmamasını, normal sola yaslanmasını sağlar */
     
+    font-size: 2em;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    line-height: 1.6; /* Satırların birbirine girmemesi için Monkeytype standardı */
+    border-radius: 8px;
+}
+
+.word {
+    /* ÇOK KRİTİK: Kelimeleri block veya flex yapmıyoruz. 
+       inline yapıyoruz ki tarayıcı onları normal, akıcı bir paragraf metni gibi algılasın. */
+    display: inline; 
+}
+
+.letter {
+    position: relative;
+    /* Harflerin yan yana kusursuz kilitlenmesi ve imlecin düzgün durması için */
+    display: inline-block; 
+    /* Yazı tipinin harf genişliklerini eşitlemek istersen monospace yapabilirsin (Örn: Courier New) */
+}
+
+/* Boşluk karakteri içeren span'lerin genişliğini sabitlemek için (Opsiyonel ama hizalamayı korur) */
+.letter:empty, .letter:blank {
+    display: inline-block;
+    width: 0.3em;
+}
+
+/* --- Oyun İçi Renk Durumları --- */
+.letter.current {
+    color: #fff;
+    border-left: 2px solid #e2b714; /* Sarı Monkeytype imleci */
+}
+
+.letter.correct {
+    color: rgb(17, 200, 17); /* Doğru yazılan harf */
+}
+
+.letter.incorrect {
+    color: #ca4754; /* Hatalı yazılan harf (Kırmızı) */
 }

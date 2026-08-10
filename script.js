@@ -1,4 +1,4 @@
-const textContainer = document.getElementById("text-container");
+/*const textContainer = document.getElementById("text-container");
 const hiddenTextInput = document.getElementById("hidden-text-input");
 
 const text0 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus arcu eget semper vulputate. Aenean interdum sodales risus, sit amet iaculis tortor auctor nec. Curabitur turpis nisl, ultricies id dolor non, dictum dapibus ipsum. Duis tincidunt magna est, blandit pulvinar lectus gravida ut. Cras condimentum, ex sed tincidunt pretium, sem urna pharetra nunc, vel fermentum nisi dolor sed odio. Donec imperdiet orci hendrerit magna placerat, nec convallis leo elementum. Donec fermentum turpis vitae aliquet iaculis. Aenean aliquet lacinia gravida. Maecenas placerat dignissim eros id semper. Fusce accumsan, elit quis vehicula fermentum, velit nibh rutrum eros, sed rhoncus sapien nisl eleifend";
@@ -31,6 +31,8 @@ function loadText(){
     console.log(`Selected Text is ${selectedText}`);
 
     textContainer.textContent = selectedText;
+
+    renderWords(selectedText);
 }
 
 function randomNumberGenerator(){
@@ -43,13 +45,52 @@ loadText();
 
 
 function renderWords(text){
-    const wordsArray = textContainer.split(' ');
+    const wordsArray = text.split(' ');
 
     textContainer.innerHTML = wordsArray.map(word => {
-        const lettersSplitted = textContainer.split('').map(letter => return `<span class="letter">${letter}</span> `;)
+        const lettersSplitted = word.split('').map(letter => { 
+            return `<span class="letter">${letter}</span> `;
     }).join("");
 
-    return `<div class="word">${lettersSplitted}</div>`
+    return `<div class="word">${lettersSplitted}</div>`;
+}).join("");
 
 
 }
+
+*/
+
+const textContainer = document.getElementById("text-container");
+const hiddenTextInput = document.getElementById("hidden-text-input");
+
+window.addEventListener("load", () => {
+    hiddenTextInput.focus();
+});
+
+document.addEventListener("click", () => {
+    hiddenTextInput.focus();
+});
+
+textContainer.addEventListener("click", () => {
+    hiddenTextInput.focus();
+})
+
+const letters = document.querySelectorAll(".letter");
+let currentIndex = 0;
+
+hiddenTextInput.addEventListener("input", (event) => {
+    const inputValue = hiddenTextInput.value;
+    const currentLetterSpan = letters[currentIndex];
+    
+    if (inputValue.length > currentIndex) {
+        const typedChar = inputValue[currentIndex];
+        const targetChar = currentLetterSpan.innerText;
+
+        if (typedChar === targetChar) {
+            currentLetterSpan.classList.add("correct");
+        } else {
+            currentLetterSpan.classList.add("incorrect");
+        }
+        currentIndex++;
+    }
+})
