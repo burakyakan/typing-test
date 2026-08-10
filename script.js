@@ -1,4 +1,4 @@
-const wordsContainer = document.getElementById("text-container");
+const textContainer = document.getElementById("text-container");
 const hiddenTextInput = document.getElementById("hidden-text-input");
 
 const text0 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus arcu eget semper vulputate. Aenean interdum sodales risus, sit amet iaculis tortor auctor nec. Curabitur turpis nisl, ultricies id dolor non, dictum dapibus ipsum. Duis tincidunt magna est, blandit pulvinar lectus gravida ut. Cras condimentum, ex sed tincidunt pretium, sem urna pharetra nunc, vel fermentum nisi dolor sed odio. Donec imperdiet orci hendrerit magna placerat, nec convallis leo elementum. Donec fermentum turpis vitae aliquet iaculis. Aenean aliquet lacinia gravida. Maecenas placerat dignissim eros id semper. Fusce accumsan, elit quis vehicula fermentum, velit nibh rutrum eros, sed rhoncus sapien nisl eleifend";
@@ -10,12 +10,14 @@ window.addEventListener("load", () => {
     hiddenTextInput.focus();
 });
 
+textContainer.addEventListener("click", () => {
+    hiddenTextInput.focus();
+})
+
 function loadText(){
     let randomNumber = randomNumberGenerator();
     console.log(`The random Number is ${randomNumber}`)
     let selectedText = text0;
-     
-
 
     if (randomNumber === 0) {
         selectedText = text0;
@@ -28,16 +30,26 @@ function loadText(){
     }
     console.log(`Selected Text is ${selectedText}`);
 
-   
-    wordsContainer.textContent = selectedText;
-
-
+    textContainer.textContent = selectedText;
 }
 
 function randomNumberGenerator(){
     let randomNumber = Math.floor((Math.random() * 4));
-    console.log(`The random Number is ${randomNumber}`)
+    console.log(`The random Number is ${randomNumber}`);
     return randomNumber;
 }
 
 loadText();
+
+
+function renderWords(text){
+    const wordsArray = textContainer.split(' ');
+
+    textContainer.innerHTML = wordsArray.map(word => {
+        const lettersSplitted = textContainer.split('').map(letter => return `<span class="letter">${letter}</span> `;)
+    }).join("");
+
+    return `<div class="word">${lettersSplitted}</div>`
+
+
+}
