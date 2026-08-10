@@ -62,6 +62,8 @@ function renderWords(text){
 
 const textContainer = document.getElementById("text-container");
 const hiddenTextInput = document.getElementById("hidden-text-input");
+const congrats = document.getElementById("congrats");
+const restartButton = document.getElementById("restart-button");
 
 window.addEventListener("load", () => {
     hiddenTextInput.focus();
@@ -82,15 +84,42 @@ hiddenTextInput.addEventListener("input", (event) => {
     const inputValue = hiddenTextInput.value;
     const currentLetterSpan = letters[currentIndex];
     
-    if (inputValue.length > currentIndex) {
-        const typedChar = inputValue[currentIndex];
-        const targetChar = currentLetterSpan.innerText;
 
-        if (typedChar === targetChar) {
-            currentLetterSpan.classList.add("correct");
+    
+    if (inputValue.length > currentIndex) {
+    const typedChar = inputValue[currentIndex];
+    const targetChar = currentLetterSpan.innerText;
+
+    if (typedChar === targetChar) {
+        currentLetterSpan.classList.add("correct");
+    } else {
+        currentLetterSpan.classList.add("incorrect");
+    }
+    currentIndex++;
+
+    if (letters.length === currentIndex){
+        congrats.innerText = "Congrats!"
+    } 
+
+    }
+
+    
+})
+
+hiddenTextInput.addEventListener("keydown", (event) => {
+    if (event.key === "Backspace"){
+        if ((currentIndex > 0) && (letters[currentIndex -1].classList.contains("incorrect")) ) {
+            currentIndex--;
+
+            const previousLetterSpan = letters[currentIndex];
+            previousLetterSpan.classList.remove("correct", "incorrect");
         } else {
-            currentLetterSpan.classList.add("incorrect");
+            event.preventDefault();
         }
-        currentIndex++;
     }
 })
+
+
+restartButton.addEventListener("click", () => {
+    location.reload();
+});
