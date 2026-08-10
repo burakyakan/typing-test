@@ -1,0 +1,14 @@
+body{
+    text-align: center;
+    margin-left: 10%;
+    margin-right: 10%;
+    font-family: Arial, Helvetica, sans-serif;
+    
+}
+
+#text-container{
+    text-align: justify;
+    font-size: 2rem;
+
+    
+}

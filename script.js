@@ -1,0 +1,43 @@
+const wordsContainer = document.getElementById("text-container");
+const hiddenTextInput = document.getElementById("hidden-text-input");
+
+const text0 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus arcu eget semper vulputate. Aenean interdum sodales risus, sit amet iaculis tortor auctor nec. Curabitur turpis nisl, ultricies id dolor non, dictum dapibus ipsum. Duis tincidunt magna est, blandit pulvinar lectus gravida ut. Cras condimentum, ex sed tincidunt pretium, sem urna pharetra nunc, vel fermentum nisi dolor sed odio. Donec imperdiet orci hendrerit magna placerat, nec convallis leo elementum. Donec fermentum turpis vitae aliquet iaculis. Aenean aliquet lacinia gravida. Maecenas placerat dignissim eros id semper. Fusce accumsan, elit quis vehicula fermentum, velit nibh rutrum eros, sed rhoncus sapien nisl eleifend";
+const text1 = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex"
+const text2 = "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. 'What's happened to me?' he thought. It wasn't a dream. His room, a proper human"
+const text3 = "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to"
+
+window.addEventListener("load", () => {
+    hiddenTextInput.focus();
+});
+
+function loadText(){
+    let randomNumber = randomNumberGenerator();
+    console.log(`The random Number is ${randomNumber}`)
+    let selectedText = text0;
+     
+
+
+    if (randomNumber === 0) {
+        selectedText = text0;
+    } else if (randomNumber === 1) {
+        selectedText = text1;
+    } else if (randomNumber === 2) {
+        selectedText = text2;
+    } else {
+        selectedText = text3;
+    }
+    console.log(`Selected Text is ${selectedText}`);
+
+   
+    wordsContainer.textContent = selectedText;
+
+
+}
+
+function randomNumberGenerator(){
+    let randomNumber = Math.floor((Math.random() * 4));
+    console.log(`The random Number is ${randomNumber}`)
+    return randomNumber;
+}
+
+loadText();
