@@ -68,6 +68,9 @@ const scoreboard = document.getElementById("scoreboard");
 const timer = document.getElementById("timer");
 const buttonBox = document.getElementsByName("time-select-box");
 const timeButtons = document.querySelectorAll(".time-buttons");
+const finishTimeText = document.getElementById("finish-time-text");
+const startTypingText = document.getElementById("start-typing-text");
+const congrats = document.getElementById("congrats");
 
 const letterRegex = /^[a-zA-ZçğıöşüÇĞİÖŞÜ ]$/;
 
@@ -92,8 +95,15 @@ let currentIndex = 0;
 
 
 hiddenTextInput.addEventListener("input", (event) => {
+    if (hiddenTextInput.readOnly) {
+        return;
+    }
+    
+    startTypingText.style.display = "none";
     const inputValue = hiddenTextInput.value;
     const currentLetterSpan = letters[currentIndex];
+
+    
     
 
     
@@ -101,22 +111,40 @@ hiddenTextInput.addEventListener("input", (event) => {
     const typedChar = inputValue[currentIndex];
     const targetChar = currentLetterSpan.innerText;
 
-    if (typedChar === targetChar) {
-        currentLetterSpan.classList.add("correct");
-    } else {
-        currentLetterSpan.classList.add("incorrect");
-    }
+        if (typedChar === targetChar) {
+            currentLetterSpan.classList.add("correct");
+        } else {
+            currentLetterSpan.classList.add("incorrect");
+        }
+
     currentIndex++;
 
     if (letters.length === currentIndex){
+
+        clearInterval(countdown);
+
+        elapsedTime = selectedTime - timeLeft;
+
+        hiddenTextInput.readOnly = true; 
+
+        //buttonBox.style.pointerEvents = "none";
+
+        textContainer.style.filter = "blur(3px)";
         endText.innerText = "You have completed the test."
+        finishTimeText.innerText = `Completed in ${elapsedTime} seconds.`;
+        timer.style.display = "none";
+        congrats.innerText = "Congratulations! You have completed the test in time!"
 
         const incorrectAmount = document.getElementsByClassName("incorrect").length;
         const correctAmount = document.getElementsByClassName("correct").length;
         const totalAmount = letters.length;
 
-        scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount}</p>`;
+        percentage = Math.round((correctAmount * 100) / totalAmount);
+        scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount} (${percentage}%) Correct</p>`;
+
+        hiddenTextInput.readOnly = true;
     } 
+
     }
 })
 
@@ -124,6 +152,12 @@ hiddenTextInput.addEventListener("input", (event) => {
 
 hiddenTextInput.addEventListener("keydown", (event) => {
     if (event.key === "Backspace"){
+
+        if (timeLeft < 0 || currentIndex === letters.length || hiddenTextInput.readOnly) {
+            event.preventDefault();
+            return;
+        }
+
         if ((currentIndex > 0) && (letters[currentIndex -1].classList.contains("incorrect")) ) {
             currentIndex--;
 
@@ -144,12 +178,16 @@ let pressCount = 0;
 let finishTime;
 let selectedTime = 30;
 let timeLeft = selectedTime;
+let countdown;
+let elapsedTime = 0;
+let percentage = 0;
 
 timeButtons.forEach((button) => {
     
     button.addEventListener("click", () => {
         
-        if (pressCount > 0){
+        if (pressCount > 0 || hiddenTextInput.readOnly){
+            return;
             //buttonBox.style.pointerEvents = "none";
             //buttonBox.style.opacity = "0.6";
         }   else { 
@@ -168,26 +206,31 @@ timeButtons.forEach((button) => {
     
 });
 
-
-//!(event.key === "Backspace")
-
-
 console.log(`Time left is ${timeLeft}`);
+
 hiddenTextInput.addEventListener("keydown", (event) => {
+
+    if (hiddenTextInput.readOnly) {
+        event.preventDefault(); 
+        return; 
+    }
+
     if (letterRegex.test(event.key)){
         timer.innerText = `${timeLeft} seconds left!`;
         if (pressCount === 0){
             pressCount++;
 
-            const countdown = setInterval( () => {
+            countdown = setInterval( () => {
             if (timeLeft <= 0) {
                 clearInterval(countdown);
                 timer.innerText = "Time is up!";
 
+
                 const incorrectAmount = document.getElementsByClassName("incorrect").length;
                 const correctAmount = document.getElementsByClassName("correct").length;
                 const totalAmount = letters.length;
-                scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount}</p>`;
+                percentage = Math.round((correctAmount * 100) / totalAmount);
+                scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount} (${percentage}%) Correct</p>`;
                 
                 hiddenTextInput.readOnly = true;
                 textContainer.style.filter = "blur(3px)";

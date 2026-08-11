@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Typing Test – yakan.dev</title>
     <link rel="stylesheet" href="style.css">
+    <meta name="author" content="Burak Yakan">
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="A typing test app.">
+
 </head>
 <body>
     <header>
@@ -22,8 +26,9 @@
             <button class="time-buttons">120</button>
          </div>
 
-
+         <p id="congrats"></p>
          <p id="timer"></p>
+         <p id="start-typing-text"><i>Start Typing to Start...</i></p>
          <div id="text-container">
             <div class="word">
                 <span class="letter">B</span>
@@ -58,6 +63,7 @@
          
         <input type="text" id="hidden-text-input" autofocus autocomplete="off">
         <p id="end-text"></p>
+        <p id="finish-time-text"></p>
         <p id="scoreboard"></p>
         <button id="restart-button">Restart Test</button>
 

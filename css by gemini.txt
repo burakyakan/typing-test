@@ -1,0 +1,174 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+}
+
+header {
+    margin-top: 1rem;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    color: #e2b714;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    gap: 1.5rem;
+}
+
+/* Süre Seçim Kutusu */
+.time-select-box {
+    display: flex;
+    gap: 0.5rem;
+    background-color: #1a1a1a;
+    padding: 0.4rem;
+    border-radius: 8px;
+    border: 1px solid #2a2a2a;
+}
+
+.time-buttons {
+    background: transparent;
+    border: none;
+    color: #646669;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.time-buttons:hover {
+    color: #d1d0c5;
+}
+
+.time-buttons.active {
+    background-color: #e2b714;
+    color: #121212;
+}
+
+/* Bilgi Metinleri ve Sayaç */
+#timer {
+    font-size: 1.2rem;
+    color: #e2b714;
+    font-weight: 500;
+    height: 1.5rem;
+}
+
+#start-typing-text {
+    color: #646669;
+    font-size: 1rem;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
+
+/* Metin Alanı */
+#text-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 0.4rem;
+    font-size: 1.8rem;
+    font-family: monospace;
+    max-width: 100%;
+    padding: 1.5rem;
+    background-color: #1a1a1a;
+    border-radius: 12px;
+    border: 1px solid #2a2a2a;
+    line-height: 1.6;
+    transition: filter 0.3s ease;
+    user-select: none;
+}
+
+.word {
+    display: flex;
+}
+
+.letter {
+    color: #646669;
+    transition: color 0.1s ease;
+}
+
+/* Doğru ve Yanlış Harf Durumları */
+.letter.correct {
+    color: #d1d0c5;
+}
+
+.letter.incorrect {
+    color: #ca4754;
+    background-color: rgba(202, 71, 84, 0.15);
+    border-radius: 2px;
+}
+
+/* Gizli Input */
+#hidden-text-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Sonuç Ekranı Alanları */
+#end-text {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #d1d0c5;
+}
+
+#finish-time-text {
+    font-size: 1.1rem;
+    color: #646669;
+}
+
+#scoreboard {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #e2b714;
+}
+
+/* Yeniden Başlat Butonu */
+#restart-button {
+    background-color: #2a2a2a;
+    color: #d1d0c5;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 1rem;
+}
+
+#restart-button:hover {
+    background-color: #e2b714;
+    color: #121212;
+}
+
+footer {
+    font-size: 0.8rem;
+    color: #646669;
+}

@@ -1,0 +1,124 @@
+#hidden-text-input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0;
+}
+
+#restart-button{
+    background-color: #e2b714;
+    border: none;
+    border-radius: 20px;
+    margin: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: large;
+    font-weight: bold;
+    color: #fff;
+
+}
+
+#restart-button:hover{
+    background-color: #fcd858;
+}
+
+
+
+body {
+    margin: 0 10%; 
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(64, 64, 64);
+    color: rgb(245, 244, 242);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Oyunu dikey eksende tam ortalar */
+    text-align: center;
+}
+
+#text-container {
+    /* Sihirli Komutlar: Kelimelerin kutularını değil, içindeki metni iki yana yaslar */
+    text-align: justify;
+    text-align-last: left; /* Son satırın dikdörtgen olmamasını, normal sola yaslanmasını sağlar */
+    
+    font-size: 2em;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    line-height: 1.6; /* Satırların birbirine girmemesi için Monkeytype standardı */
+    border-radius: 8px;
+}
+
+.word {
+    /* ÇOK KRİTİK: Kelimeleri block veya flex yapmıyoruz. 
+       inline yapıyoruz ki tarayıcı onları normal, akıcı bir paragraf metni gibi algılasın. */
+    display: inline; 
+}
+
+.letter {
+    position: relative;
+    /* Harflerin yan yana kusursuz kilitlenmesi ve imlecin düzgün durması için */
+    display: inline-block; 
+    /* Yazı tipinin harf genişliklerini eşitlemek istersen monospace yapabilirsin (Örn: Courier New) */
+}
+
+/* Boşluk karakteri içeren span'lerin genişliğini sabitlemek için (Opsiyonel ama hizalamayı korur) */
+.letter:empty, .letter:blank {
+    display: inline-block;
+    width: 0.3em;
+}
+
+/* --- Oyun İçi Renk Durumları --- */
+.letter.current {
+    color: #fff;
+    border-left: 2px solid #e2b714; /* Sarı Monkeytype imleci */
+}
+
+.letter.correct {
+    color: rgb(17, 200, 17); /* Doğru yazılan harf */
+}
+
+.letter.incorrect {
+    color: #ca4754; /* Hatalı yazılan harf (Kırmızı) */
+}
+
+
+
+.time-buttons{
+    border-radius: 10px;
+    color: #7e7e7e;
+    background-color: rgb(45, 45, 45);
+    border: none;
+    padding: 5px 10px 5px 10px;
+    width: 55px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+
+.time-buttons:hover{
+    color: whitesmoke;
+}
+
+.time-buttons.active{
+    color:#e2b714;
+}
+
+
+
+.time-select-box{
+    border-radius: 20px;
+    border: none;
+    padding: 5px 10px 5px 10px;
+    background-color: #1b1b1b;
+    margin-left: 450px;
+    margin-right: 450px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
