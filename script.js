@@ -65,6 +65,11 @@ const hiddenTextInput = document.getElementById("hidden-text-input");
 const endText = document.getElementById("end-text");
 const restartButton = document.getElementById("restart-button");
 const scoreboard = document.getElementById("scoreboard");
+const timer = document.getElementById("timer");
+const buttonBox = document.getElementsByName("time-select-box");
+const timeButtons = document.querySelectorAll(".time-buttons");
+
+const letterRegex = /^[a-zA-ZçğıöşüÇĞİÖŞÜ ]$/;
 
 
 
@@ -135,7 +140,80 @@ restartButton.addEventListener("click", () => {
     location.reload();
 });
 
+let pressCount = 0;
+let finishTime;
+let selectedTime = 30;
+let timeLeft = selectedTime;
+
+timeButtons.forEach((button) => {
+    
+    button.addEventListener("click", () => {
+        
+        if (pressCount > 0){
+            //buttonBox.style.pointerEvents = "none";
+            //buttonBox.style.opacity = "0.6";
+        }   else { 
+            timeButtons.forEach((btn) => btn.classList.remove("active"));
+            button.classList.add("active");
+            selectedTime = parseInt(button.textContent, 10);
+            console.log(`Selected time is ${selectedTime}`);
+            timeLeft = selectedTime;
+
+            
+            
+
+        }
+    });
+
+    
+});
 
 
+//!(event.key === "Backspace")
+
+
+console.log(`Time left is ${timeLeft}`);
+hiddenTextInput.addEventListener("keydown", (event) => {
+    if (letterRegex.test(event.key)){
+        timer.innerText = `${timeLeft} seconds left!`;
+        if (pressCount === 0){
+            pressCount++;
+
+            const countdown = setInterval( () => {
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timer.innerText = "Time is up!";
+
+                const incorrectAmount = document.getElementsByClassName("incorrect").length;
+                const correctAmount = document.getElementsByClassName("correct").length;
+                const totalAmount = letters.length;
+                scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount}</p>`;
+                
+                hiddenTextInput.readOnly = true;
+                textContainer.style.filter = "blur(3px)";
+        
+            } else {
+                
+                
+                timeLeft--;
+                timer.innerText = `${timeLeft} seconds left!`
+            }
+
+        }, 1000);
+
+
+        } 
+
+    }
+})
+
+
+
+
+
+//TO-DO
+// * Spaces should be registered as correct or incorrect
+// * Fix timer logic
+// * Add longer texts
 
 
