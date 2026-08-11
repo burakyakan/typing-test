@@ -2,6 +2,7 @@
 // * Spaces should be registered as correct or incorrect
 // * aposthrophe (') is not being registered 
 // * Add longer texts
+// Yarın quote'arı json'a atıp oradan çekmeyi yapcam.
 
 
 
@@ -29,7 +30,7 @@ const text2 = "One morning, when Gregor Samsa woke from troubled dreams, he foun
 const text3 = "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to"
 const text4 = "The smaller man did not put up his hands, made no effort to ward off that terrific drive, but somehow, just as the great fist was within a fraction of an inch of his jaw, his neck moved swiftly, smoothly, easily, not much, just the width of Sam Eaton’s knuckles. The blow whizzed harmlessly by, Sam being carried forward by his own vicious lunge.";
 const text5 = "Sam's great fist crashed forward in a lurching, smashing blow, a blow that dashed straight for the other's jaw.";
-
+const text6 = "Cleaning your house while kids are around is like shoveling the walk while it's still snowing.";
 
 let pressCount = 0;
 let finishTime;
@@ -44,7 +45,7 @@ let currentIndex = 0;
 
 
 function randomNumberGenerator(){
-    let randomNumber = Math.floor((Math.random() * 6));
+    let randomNumber = Math.floor((Math.random() * 7));
     console.log(`The random Number is ${randomNumber}`);
     return randomNumber;
 }
@@ -68,6 +69,8 @@ function renderWords(text){
 letters = document.querySelectorAll(".letter");
 
 
+
+
 }
 
 function loadText(){
@@ -85,8 +88,10 @@ function loadText(){
         selectedText = text3;
     } else if (randomNumber === 4) {
         selectedText = text4;
-    } else {
+    } else if (randomNumber === 5) {
         selectedText = text5;
+    } else {
+        selectedText = text6;
     }
     console.log(`Selected Text is ${selectedText}`);
 
