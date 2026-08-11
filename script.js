@@ -62,8 +62,11 @@ function renderWords(text){
 
 const textContainer = document.getElementById("text-container");
 const hiddenTextInput = document.getElementById("hidden-text-input");
-const congrats = document.getElementById("congrats");
+const endText = document.getElementById("end-text");
 const restartButton = document.getElementById("restart-button");
+const scoreboard = document.getElementById("scoreboard");
+
+
 
 window.addEventListener("load", () => {
     hiddenTextInput.focus();
@@ -79,6 +82,9 @@ textContainer.addEventListener("click", () => {
 
 const letters = document.querySelectorAll(".letter");
 let currentIndex = 0;
+
+
+
 
 hiddenTextInput.addEventListener("input", (event) => {
     const inputValue = hiddenTextInput.value;
@@ -98,13 +104,18 @@ hiddenTextInput.addEventListener("input", (event) => {
     currentIndex++;
 
     if (letters.length === currentIndex){
-        congrats.innerText = "Congrats!"
+        endText.innerText = "You have completed the test."
+
+        const incorrectAmount = document.getElementsByClassName("incorrect").length;
+        const correctAmount = document.getElementsByClassName("correct").length;
+        const totalAmount = letters.length;
+
+        scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount}</p>`;
     } 
-
     }
-
-    
 })
+
+
 
 hiddenTextInput.addEventListener("keydown", (event) => {
     if (event.key === "Backspace"){
@@ -123,3 +134,8 @@ hiddenTextInput.addEventListener("keydown", (event) => {
 restartButton.addEventListener("click", () => {
     location.reload();
 });
+
+
+
+
+
