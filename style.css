@@ -91,7 +91,7 @@ body {
 
 
 
-.time-buttons{
+.time-buttons {
     border-radius: 10px;
     color: #7e7e7e;
     background-color: rgb(45, 45, 45);
@@ -104,17 +104,17 @@ body {
 }
 
 
-.time-buttons:hover{
+.time-buttons:hover {
     color: whitesmoke;
 }
 
-.time-buttons.active{
+.time-buttons.active {
     color:#e2b714;
 }
 
 
 
-.time-select-box{
+.time-select-box {
     border-radius: 20px;
     border: none;
     padding: 5px 10px 5px 10px;
@@ -126,7 +126,7 @@ body {
 
 }
 
-.text-type-buttons{
+.text-type-buttons {
     border-radius: 10px;
     color: #7e7e7e;
     background-color: rgb(45, 45, 45);
@@ -138,15 +138,15 @@ body {
     font-weight: bold;
 }
 
-.text-type-buttons:hover{
+.text-type-buttons:hover {
     color: whitesmoke;
 }
 
-.text-type-buttons.active{
+.text-type-buttons.active {
     color:#e2b714;
 }
 
-.text-type-select-box{
+.text-type-select-box {
     border-radius: 20px;
     border: none;
     padding: 5px 10px 5px 10px;
@@ -157,3 +157,10 @@ body {
     margin-bottom: 10px;
 
 }
+
+#start-typing-text {
+    /* font-size: 30px; */
+    color: whitesmoke;
+    
+}
+

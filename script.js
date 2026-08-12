@@ -1,15 +1,9 @@
 //TO-DO
 // * Spaces should be registered as correct or incorrect
-// * aposthrophe (') is not being registered 
-// * Add longer texts
-// Yarın quote'arı json'a atıp oradan çekmeyi yapcam.
 // * Çizgi metin imleci eklenmeli ki kullanıcı nerede kaldığını görebilsin.
-// * Ayrıca kelimeler bölünmemeli
 // * localStorage ile en son kullanılan süre ayarı kaydedilsin ve hep onda başlasın
 // * Test başlayınca saniye buttonları hoverable olmasın
 // * Kaç harf yazıldığı tespit ediliyor ama kaç kelime yazıldığı edilmiyor, onu test et. WPM mantığı
-
-
 
 
 
@@ -24,6 +18,8 @@ const textTypeButtons = document.querySelectorAll(".text-type-buttons");
 const finishTimeText = document.getElementById("finish-time-text");
 const startTypingText = document.getElementById("start-typing-text");
 const congrats = document.getElementById("congrats");
+const textTypeSelectBox = document.querySelector(".text-type-select-box");
+const timeSelectBox = document.querySelector(".time-select-box");
 
 //const letterRegex = /^[a-zA-ZçğıöşüÇĞİÖŞÜ ]$/;
 //const letterRegex = /^[a-zA-ZçğıöşüÇĞİÖŞÜ0-9 .,;:!?()""'\-]+$/;
@@ -61,9 +57,6 @@ async function getQuotesText(){
         console.log(`Source: ${loadedTextSource}, Length: ${loadedTextLength}, ID: ${loadedTextID}`);
 
         return loadedText;
-            
-
-        
 
     } catch (error) {
         console.error(error);
@@ -88,8 +81,6 @@ async function getRandomWordsText(){
 
             selectedWordsArray.push(selectedRandomWord);
             console.log(`Selected Random Word is: ${selectedRandomWord}`);
-        
-            
         }
 
         return selectedWordsArray.join(" ").trim();
@@ -118,9 +109,6 @@ function renderWords(text){
 
     letters = document.querySelectorAll(".letter");
 }
-
-
-
 
 async function loadText(textType){
 
@@ -255,27 +243,23 @@ timeButtons.forEach((button) => {
         
         if (pressCount > 0 || hiddenTextInput.readOnly){
             return;
-            //buttonBox.style.pointerEvents = "none";
-            //buttonBox.style.opacity = "0.6";
+
         }   else { 
             timeButtons.forEach((btn) => btn.classList.remove("active"));
             button.classList.add("active");
             selectedTime = parseInt(button.textContent, 10);
             console.log(`Selected time is ${selectedTime}`);
             timeLeft = selectedTime;
-
-            
-            
-
         }
     });
-
-    
 });
 
 console.log(`Time left is ${timeLeft}`);
 
 hiddenTextInput.addEventListener("keydown", (event) => {
+
+    textTypeSelectBox.style.pointerEvents = 'none';
+    timeSelectBox.style.pointerEvents = 'none';
 
     if (hiddenTextInput.readOnly) {
         event.preventDefault(); 
@@ -287,9 +271,13 @@ hiddenTextInput.addEventListener("keydown", (event) => {
     }
 
     if (letterRegex.test(event.key)){
-        timer.innerText = `${timeLeft} seconds left!`;
+        timer.style.color = "#e2b714";
+        timer.style.fontWeight = "bold";
+        timer.style.fontSize = "30px";
+        timer.innerText = `${timeLeft}`;
         if (pressCount === 0){
             pressCount++;
+            
 
             countdown = setInterval( () => {
             if (timeLeft <= 0) {
@@ -310,7 +298,7 @@ hiddenTextInput.addEventListener("keydown", (event) => {
                 
                 
                 timeLeft--;
-                timer.innerText = `${timeLeft} seconds left!`
+                timer.innerText = `${timeLeft}`
             }
 
         }, 1000);
@@ -325,29 +313,29 @@ hiddenTextInput.addEventListener("keydown", (event) => {
 
 
 textTypeButtons.forEach((button) => {
-    
     button.addEventListener("click", () => {
-        
         if (pressCount > 0 || hiddenTextInput.readOnly){
+            
+            
+            
+            
             return;
-            //buttonBox.style.pointerEvents = "none";
-            //buttonBox.style.opacity = "0.6";
-        }   else { 
+
+        } else { 
             textTypeButtons.forEach((btn) => btn.classList.remove("active"));
             button.classList.add("active");
             selectedTextType = button.textContent;
             console.log(`Selected text type is ${selectedTextType}`);
             loadText(selectedTextType);
             
-
             
             
 
+            
         }
     });
-
-    
 });
+
 
 
 
