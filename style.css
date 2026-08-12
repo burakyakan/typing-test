@@ -58,7 +58,8 @@ body {
 .word {
     /* ÇOK KRİTİK: Kelimeleri block veya flex yapmıyoruz. 
        inline yapıyoruz ki tarayıcı onları normal, akıcı bir paragraf metni gibi algılasın. */
-    display: inline; 
+    display: inline-block;
+    white-space: nowrap;
 }
 
 .letter {

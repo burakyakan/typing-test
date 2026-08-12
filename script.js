@@ -8,7 +8,6 @@
 // * localStorage ile en son kullanılan süre ayarı kaydedilsin ve hep onda başlasın
 // * Test başlayınca saniye buttonları hoverable olmasın
 // * Kaç harf yazıldığı tespit ediliyor ama kaç kelime yazıldığı edilmiyor, onu test et. WPM mantığı
-// * Sayı tuşları, nokta, virgül, çift tırnak vb işaretler oyunu başlatıyor ama saniye sayacı gözükmüyor
 
 
 
@@ -31,8 +30,6 @@ const congrats = document.getElementById("congrats");
 //const letterRegex = /^[a-zA-ZçğıöşüÇĞİÖŞÜ0-9\s.,;:!?()""'\-+]$/;
 const letterRegex = /^[\p{L}\p{N}\p{P}\p{S}\s]$/u;
 
-
-
 let pressCount = 0;
 let finishTime;
 let selectedTime = 30;
@@ -45,10 +42,10 @@ let percentage = 0;
 let letters = [];
 let currentIndex = 0;
 
-async function getText(){
+async function getQuotesText(){
     try {
         
-        const url = `/texts/english.json`;
+        const url = `/texts/quotes/english.json`;
         const response = await fetch(url);
         const textData = await response.json();
 
@@ -67,6 +64,35 @@ async function getText(){
             
 
         
+
+    } catch (error) {
+        console.error(error);
+
+    }
+}
+
+
+async function getRandomWordsText(){
+    try {
+        const url = `/texts/words/english_1k.json`;
+        const response = await fetch(url);
+        const textData = await response.json();
+        const selectedWordsArray = [];
+        let selectedRandomWord;
+
+        const textArray = textData.words;
+
+        for (let i = 0; i < 30; i++) {
+            const randomTextIndex = Math.floor(Math.random() * textArray.length);
+            selectedRandomWord = textArray[randomTextIndex];
+
+            selectedWordsArray.push(selectedRandomWord);
+            console.log(`Selected Random Word is: ${selectedRandomWord}`);
+        
+            
+        }
+
+        return selectedWordsArray.join(" ").trim();
 
     } catch (error) {
         console.error(error);
@@ -101,9 +127,13 @@ async function loadText(textType){
     let selectedText;
 
     if (textType === "Quotes") {
-        selectedText =  await getText();
+        selectedText =  await getQuotesText();
+
+    } else if (textType === "Random Words") {
+        selectedText =  await getRandomWordsText();
+
     } else {
-        selectedText =  "Yay! Other types can be selected!"
+        selectedText =  await getQuotesText();
     }
     
     
@@ -318,8 +348,6 @@ textTypeButtons.forEach((button) => {
 
     
 });
-
-
 
 
 
