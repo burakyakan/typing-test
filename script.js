@@ -2,10 +2,7 @@
 // * Spaces should be registered as correct or incorrect
 // * Çizgi metin imleci eklenmeli ki kullanıcı nerede kaldığını görebilsin.
 // * localStorage ile en son kullanılan süre ayarı kaydedilsin ve hep onda başlasın
-// * Test başlayınca saniye buttonları hoverable olmasın
-// * Kaç harf yazıldığı tespit ediliyor ama kaç kelime yazıldığı edilmiyor, onu test et. WPM mantığı
-
-
+// * Pop-over ile metin üstüne scoreboard bas.
 
 const textContainer = document.getElementById("text-container");
 const hiddenTextInput = document.getElementById("hidden-text-input");
@@ -20,10 +17,9 @@ const startTypingText = document.getElementById("start-typing-text");
 const congrats = document.getElementById("congrats");
 const textTypeSelectBox = document.querySelector(".text-type-select-box");
 const timeSelectBox = document.querySelector(".time-select-box");
+const netWpmText = document.getElementById("net-wpm-text");
+const rawWpmText = document.getElementById("raw-wpm-text");
 
-//const letterRegex = /^[a-zA-ZçğıöşüÇĞİÖŞÜ ]$/;
-//const letterRegex = /^[a-zA-ZçğıöşüÇĞİÖŞÜ0-9 .,;:!?()""'\-]+$/;
-//const letterRegex = /^[a-zA-ZçğıöşüÇĞİÖŞÜ0-9\s.,;:!?()""'\-+]$/;
 const letterRegex = /^[\p{L}\p{N}\p{P}\p{S}\s]$/u;
 
 let pressCount = 0;
@@ -60,7 +56,6 @@ async function getQuotesText(){
 
     } catch (error) {
         console.error(error);
-
     }
 }
 
@@ -87,7 +82,6 @@ async function getRandomWordsText(){
 
     } catch (error) {
         console.error(error);
-
     }
 }
 
@@ -130,13 +124,7 @@ async function loadText(textType){
     renderWords(selectedText);
 }
 
-
-
 //eski kod bitiş
-
-
-
-
 
 window.addEventListener("load", () => {
     hiddenTextInput.focus();
@@ -151,11 +139,6 @@ textContainer.addEventListener("click", () => {
     hiddenTextInput.focus();
 })
 
-
-
-
-
-
 hiddenTextInput.addEventListener("input", (event) => {
     if (hiddenTextInput.readOnly) {
         return;
@@ -164,10 +147,6 @@ hiddenTextInput.addEventListener("input", (event) => {
     startTypingText.style.display = "none";
     const inputValue = hiddenTextInput.value;
     const currentLetterSpan = letters[currentIndex];
-
-    
-    
-
     
     if (inputValue.length > currentIndex) {
     const typedChar = inputValue[currentIndex];
@@ -200,17 +179,19 @@ hiddenTextInput.addEventListener("input", (event) => {
         const incorrectAmount = document.getElementsByClassName("incorrect").length;
         const correctAmount = document.getElementsByClassName("correct").length;
         const totalAmount = letters.length;
+        const netWpm = Math.round((((totalAmount / 5) - (incorrectAmount / 5)) * 60) / selectedTime);
+        const rawWpm = Math.round((totalAmount / 5) * (60/selectedTime));
 
         percentage = Math.round((correctAmount * 100) / totalAmount);
         scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount} (${percentage}%) Correct</p>`;
+        netWpmText.innerText = `Net Words per Minute (WPM): ${netWpm} [Incorrect words are not included]`;
+        rawWpmText.innerText = `Raw Words per Minute (WPM): ${rawWpm} [All keystrokes are calculated]`;
 
         hiddenTextInput.readOnly = true;
     } 
 
     }
 })
-
-
 
 hiddenTextInput.addEventListener("keydown", (event) => {
     if (event.key === "Backspace"){
@@ -231,11 +212,9 @@ hiddenTextInput.addEventListener("keydown", (event) => {
     }
 })
 
-
 restartButton.addEventListener("click", () => {
     location.reload();
 });
-
 
 timeButtons.forEach((button) => {
     
@@ -284,7 +263,6 @@ hiddenTextInput.addEventListener("keydown", (event) => {
                 clearInterval(countdown);
                 timer.innerText = "Time is up!";
 
-
                 const incorrectAmount = document.getElementsByClassName("incorrect").length;
                 const correctAmount = document.getElementsByClassName("correct").length;
                 const totalAmount = letters.length;
@@ -294,15 +272,20 @@ hiddenTextInput.addEventListener("keydown", (event) => {
                 hiddenTextInput.readOnly = true;
                 textContainer.style.filter = "blur(3px)";
         
+                const netWpm = Math.round((((totalAmount / 5) - (incorrectAmount / 5)) * 60) / selectedTime);
+                const rawWpm = Math.round((totalAmount / 5) * (60/selectedTime));
+
+                scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount} (${percentage}%) Correct</p>`;
+                netWpmText.innerText = `Net Words per Minute (WPM): ${netWpm} [Incorrect words are not included]`;
+                rawWpmText.innerText = `Raw Words per Minute (WPM): ${rawWpm} [All keystrokes are calculated]`;
+                // Bu kısmı "pop-over'lar" ile yap.
+
             } else {
-                
-                
                 timeLeft--;
                 timer.innerText = `${timeLeft}`
             }
 
         }, 1000);
-
 
         } 
 
@@ -315,10 +298,6 @@ hiddenTextInput.addEventListener("keydown", (event) => {
 textTypeButtons.forEach((button) => {
     button.addEventListener("click", () => {
         if (pressCount > 0 || hiddenTextInput.readOnly){
-            
-            
-            
-            
             return;
 
         } else { 
@@ -326,18 +305,7 @@ textTypeButtons.forEach((button) => {
             button.classList.add("active");
             selectedTextType = button.textContent;
             console.log(`Selected text type is ${selectedTextType}`);
-            loadText(selectedTextType);
-            
-            
-            
-
-            
+            loadText(selectedTextType); 
         }
     });
 });
-
-
-
-
-
-
