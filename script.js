@@ -152,7 +152,7 @@ hiddenTextInput.addEventListener("input", (event) => {
     const typedChar = inputValue[currentIndex];
     const targetChar = currentLetterSpan.innerText;
 
-        if (typedChar === targetChar) {
+        if (typedChar === targetChar || (typedChar === " " && targetChar === "\u00A0")) {
             currentLetterSpan.classList.add("correct");
         } else {
             currentLetterSpan.classList.add("incorrect");
@@ -175,6 +175,7 @@ hiddenTextInput.addEventListener("input", (event) => {
         finishTimeText.innerText = `Completed in ${elapsedTime} seconds.`;
         timer.style.display = "none";
         congrats.innerText = "Congratulations! You have completed the test in time!"
+        confetti({ count: 500, position: { x: window.innerWidth / 2, y: window.innerHeight / 2 } });
 
         const incorrectAmount = document.getElementsByClassName("incorrect").length;
         const correctAmount = document.getElementsByClassName("correct").length;
@@ -237,9 +238,8 @@ console.log(`Time left is ${timeLeft}`);
 
 hiddenTextInput.addEventListener("keydown", (event) => {
 
-    textTypeSelectBox.style.pointerEvents = 'none';
-    timeSelectBox.style.pointerEvents = 'none';
-
+    
+    
     if (hiddenTextInput.readOnly) {
         event.preventDefault(); 
         return; 
@@ -249,7 +249,9 @@ hiddenTextInput.addEventListener("keydown", (event) => {
         return;
     }
 
-    if (letterRegex.test(event.key)){
+    if (event.key === " " || letterRegex.test(event.key)){
+        textTypeSelectBox.style.pointerEvents = 'none';
+        timeSelectBox.style.pointerEvents = 'none';
         timer.style.color = "#e2b714";
         timer.style.fontWeight = "bold";
         timer.style.fontSize = "30px";
@@ -272,7 +274,7 @@ hiddenTextInput.addEventListener("keydown", (event) => {
                 hiddenTextInput.readOnly = true;
                 textContainer.style.filter = "blur(3px)";
         
-                const netWpm = Math.round((((totalAmount / 5) - (incorrectAmount / 5)) * 60) / selectedTime);
+                const netWpm = (Math.round((((totalAmount / 5) - (incorrectAmount / 5)) * 60) / selectedTime * 100))/100;
                 const rawWpm = Math.round((totalAmount / 5) * (60/selectedTime));
 
                 scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount} (${percentage}%) Correct</p>`;
@@ -293,7 +295,6 @@ hiddenTextInput.addEventListener("keydown", (event) => {
         event.preventDefault();
     }
 })
-
 
 textTypeButtons.forEach((button) => {
     button.addEventListener("click", () => {
