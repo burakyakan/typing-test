@@ -1,8 +1,7 @@
 //TO-DO
-// * Spaces should be registered as correct or incorrect
-// * Çizgi metin imleci eklenmeli ki kullanıcı nerede kaldığını görebilsin.
 // * localStorage ile en son kullanılan süre ayarı kaydedilsin ve hep onda başlasın
 // * Pop-over ile metin üstüne scoreboard bas.
+// * Önceki yanlışlara kadar geri gidip onu temizleyebilme olmalı.
 
 const textContainer = document.getElementById("text-container");
 const hiddenTextInput = document.getElementById("hidden-text-input");
@@ -33,6 +32,15 @@ let percentage = 0;
 
 let letters = [];
 let currentIndex = 0;
+
+function updateCaret() {
+
+    letters.forEach(letter => letter.classList.remove("current-caret"));
+    
+    if (letters[currentIndex]) {
+        letters[currentIndex].classList.add("current-caret");
+    }
+}
 
 async function getQuotesText(){
     try {
@@ -102,6 +110,8 @@ function renderWords(text){
     }).join("");
 
     letters = document.querySelectorAll(".letter");
+
+    updateCaret();
 }
 
 async function loadText(textType){
@@ -160,6 +170,8 @@ hiddenTextInput.addEventListener("input", (event) => {
 
     currentIndex++;
 
+    updateCaret();
+
     if (letters.length === currentIndex){
 
         clearInterval(countdown);
@@ -207,6 +219,7 @@ hiddenTextInput.addEventListener("keydown", (event) => {
 
             const previousLetterSpan = letters[currentIndex];
             previousLetterSpan.classList.remove("correct", "incorrect");
+            updateCaret();
         } else {
             event.preventDefault();
         }

@@ -67,6 +67,7 @@ body {
     /* Harflerin yan yana kusursuz kilitlenmesi ve imlecin düzgün durması için */
     display: inline-block; 
     /* Yazı tipinin harf genişliklerini eşitlemek istersen monospace yapabilirsin (Örn: Courier New) */
+    
 }
 
 /* Boşluk karakteri içeren span'lerin genişliğini sabitlemek için (Opsiyonel ama hizalamayı korur) */
@@ -82,12 +83,13 @@ body {
 }
 
 .letter.correct {
-    color: rgb(17, 200, 17); /* Doğru yazılan harf */
+    color: rgb(4, 168, 4); /* Doğru yazılan harf */
+    background-color: rgba(60, 237, 10, 0.05);
 }
 
 .letter.incorrect {
     color: #ca4754; /* Hatalı yazılan harf (Kırmızı) */
-    background-color: rgba(202, 71, 84, 0.15);
+    background-color: rgba(202, 71, 84, 0.13);
     border-radius: 2px;
 }
 
@@ -171,3 +173,19 @@ a {
 }
 
 
+.letter.current-caret::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 15%;
+  width: 2.5px;
+  height: 75%;
+  background-color: #e2b714; 
+  animation: caretBlink 1s infinite;
+}
+
+
+@keyframes caretBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
