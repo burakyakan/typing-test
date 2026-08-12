@@ -238,8 +238,6 @@ console.log(`Time left is ${timeLeft}`);
 
 hiddenTextInput.addEventListener("keydown", (event) => {
 
-    
-    
     if (hiddenTextInput.readOnly) {
         event.preventDefault(); 
         return; 

@@ -87,6 +87,8 @@ body {
 
 .letter.incorrect {
     color: #ca4754; /* Hatalı yazılan harf (Kırmızı) */
+    background-color: rgba(202, 71, 84, 0.15);
+    border-radius: 2px;
 }
 
 
@@ -167,3 +169,5 @@ body {
 a {
     color: #e2b714;
 }
+
+
