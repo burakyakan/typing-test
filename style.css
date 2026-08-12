@@ -51,6 +51,8 @@ body {
     padding: 20px;
     line-height: 1.6; /* Satırların birbirine girmemesi için Monkeytype standardı */
     border-radius: 8px;
+
+    flex-wrap: wrap;
 }
 
 .word {
@@ -112,6 +114,38 @@ body {
 
 
 .time-select-box{
+    border-radius: 20px;
+    border: none;
+    padding: 5px 10px 5px 10px;
+    background-color: #1b1b1b;
+    margin-left: 450px;
+    margin-right: 450px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+
+.text-type-buttons{
+    border-radius: 10px;
+    color: #7e7e7e;
+    background-color: rgb(45, 45, 45);
+    border: none;
+    padding: 5px 10px 5px 10px;
+    width: 280px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.text-type-buttons:hover{
+    color: whitesmoke;
+}
+
+.text-type-buttons.active{
+    color:#e2b714;
+}
+
+.text-type-select-box{
     border-radius: 20px;
     border: none;
     padding: 5px 10px 5px 10px;

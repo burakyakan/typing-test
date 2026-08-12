@@ -3,7 +3,12 @@
 // * aposthrophe (') is not being registered 
 // * Add longer texts
 // Yarın quote'arı json'a atıp oradan çekmeyi yapcam.
-
+// * Çizgi metin imleci eklenmeli ki kullanıcı nerede kaldığını görebilsin.
+// * Ayrıca kelimeler bölünmemeli
+// * localStorage ile en son kullanılan süre ayarı kaydedilsin ve hep onda başlasın
+// * Test başlayınca saniye buttonları hoverable olmasın
+// * Kaç harf yazıldığı tespit ediliyor ama kaç kelime yazıldığı edilmiyor, onu test et. WPM mantığı
+// * Sayı tuşları, nokta, virgül, çift tırnak vb işaretler oyunu başlatıyor ama saniye sayacı gözükmüyor
 
 
 
@@ -15,26 +20,23 @@ const endText = document.getElementById("end-text");
 const restartButton = document.getElementById("restart-button");
 const scoreboard = document.getElementById("scoreboard");
 const timer = document.getElementById("timer");
-const buttonBox = document.getElementsByName("time-select-box");
 const timeButtons = document.querySelectorAll(".time-buttons");
+const textTypeButtons = document.querySelectorAll(".text-type-buttons");
 const finishTimeText = document.getElementById("finish-time-text");
 const startTypingText = document.getElementById("start-typing-text");
 const congrats = document.getElementById("congrats");
 
-const letterRegex = /^[a-zA-ZçğıöşüÇĞİÖŞÜ ]$/;
+//const letterRegex = /^[a-zA-ZçğıöşüÇĞİÖŞÜ ]$/;
+//const letterRegex = /^[a-zA-ZçğıöşüÇĞİÖŞÜ0-9 .,;:!?()""'\-]+$/;
+//const letterRegex = /^[a-zA-ZçğıöşüÇĞİÖŞÜ0-9\s.,;:!?()""'\-+]$/;
+const letterRegex = /^[\p{L}\p{N}\p{P}\p{S}\s]$/u;
 
 
-const text0 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus arcu eget semper vulputate. Aenean interdum sodales risus, sit amet iaculis tortor auctor nec. Curabitur turpis nisl, ultricies id dolor non, dictum dapibus ipsum. Duis tincidunt magna est, blandit pulvinar lectus gravida ut. Cras condimentum, ex sed tincidunt pretium, sem urna pharetra nunc, vel fermentum nisi dolor sed odio. Donec imperdiet orci hendrerit magna placerat, nec convallis leo elementum. Donec fermentum turpis vitae aliquet iaculis. Aenean aliquet lacinia gravida. Maecenas placerat dignissim eros id semper. Fusce accumsan, elit quis vehicula fermentum, velit nibh rutrum eros, sed rhoncus sapien nisl eleifend";
-const text1 = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex"
-const text2 = "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. 'What's happened to me?' he thought. It wasn't a dream. His room, a proper human"
-const text3 = "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to"
-const text4 = "The smaller man did not put up his hands, made no effort to ward off that terrific drive, but somehow, just as the great fist was within a fraction of an inch of his jaw, his neck moved swiftly, smoothly, easily, not much, just the width of Sam Eaton’s knuckles. The blow whizzed harmlessly by, Sam being carried forward by his own vicious lunge.";
-const text5 = "Sam's great fist crashed forward in a lurching, smashing blow, a blow that dashed straight for the other's jaw.";
-const text6 = "Cleaning your house while kids are around is like shoveling the walk while it's still snowing.";
 
 let pressCount = 0;
 let finishTime;
 let selectedTime = 30;
+let selectedTextType = "Quotes";
 let timeLeft = selectedTime;
 let countdown;
 let elapsedTime = 0;
@@ -43,11 +45,33 @@ let percentage = 0;
 let letters = [];
 let currentIndex = 0;
 
+async function getText(){
+    try {
+        
+        const url = `/texts/english.json`;
+        const response = await fetch(url);
+        const textData = await response.json();
 
-function randomNumberGenerator(){
-    let randomNumber = Math.floor((Math.random() * 7));
-    console.log(`The random Number is ${randomNumber}`);
-    return randomNumber;
+        const textArray = textData.quotes;
+
+        const randomTextIndex = Math.floor(Math.random() * textArray.length);
+        const loadedText = textArray[randomTextIndex].text;
+        const loadedTextSource = textArray[randomTextIndex].source;
+        const loadedTextLength = textArray[randomTextIndex].length;
+        const loadedTextID = textArray[randomTextIndex].id;
+
+        console.log(`Loaded Text is: ${loadedText}`);
+        console.log(`Source: ${loadedTextSource}, Length: ${loadedTextLength}, ID: ${loadedTextID}`);
+
+        return loadedText;
+            
+
+        
+
+    } catch (error) {
+        console.error(error);
+
+    }
 }
 
 
@@ -64,38 +88,26 @@ function renderWords(text){
     }
 
     return `<div class="word">${lettersSplitted}</div>`;
-}).join("");
+    }).join("");
 
-letters = document.querySelectorAll(".letter");
-
-
-
-
+    letters = document.querySelectorAll(".letter");
 }
 
-function loadText(){
-    let randomNumber = randomNumberGenerator();
-    console.log(`The random Number is ${randomNumber}`)
-    let selectedText = text0;
 
-    if (randomNumber === 0) {
-        selectedText = text0;
-    } else if (randomNumber === 1) {
-        selectedText = text1;
-    } else if (randomNumber === 2) {
-        selectedText = text2;
-    } else if (randomNumber === 3) {
-        selectedText = text3;
-    } else if (randomNumber === 4) {
-        selectedText = text4;
-    } else if (randomNumber === 5) {
-        selectedText = text5;
+
+
+async function loadText(textType){
+
+    let selectedText;
+
+    if (textType === "Quotes") {
+        selectedText =  await getText();
     } else {
-        selectedText = text6;
+        selectedText =  "Yay! Other types can be selected!"
     }
+    
+    
     console.log(`Selected Text is ${selectedText}`);
-
-    //textContainer.textContent = selectedText;
 
     renderWords(selectedText);
 }
@@ -110,7 +122,7 @@ function loadText(){
 
 window.addEventListener("load", () => {
     hiddenTextInput.focus();
-    loadText(); 
+    loadText(selectedTextType); 
 });
 
 document.addEventListener("click", () => {
@@ -240,6 +252,10 @@ hiddenTextInput.addEventListener("keydown", (event) => {
         return; 
     }
 
+    if (event.key.length !== 1) {
+        return;
+    }
+
     if (letterRegex.test(event.key)){
         timer.innerText = `${timeLeft} seconds left!`;
         if (pressCount === 0){
@@ -272,8 +288,37 @@ hiddenTextInput.addEventListener("keydown", (event) => {
 
         } 
 
+    } else {
+        event.preventDefault();
     }
 })
+
+
+textTypeButtons.forEach((button) => {
+    
+    button.addEventListener("click", () => {
+        
+        if (pressCount > 0 || hiddenTextInput.readOnly){
+            return;
+            //buttonBox.style.pointerEvents = "none";
+            //buttonBox.style.opacity = "0.6";
+        }   else { 
+            textTypeButtons.forEach((btn) => btn.classList.remove("active"));
+            button.classList.add("active");
+            selectedTextType = button.textContent;
+            console.log(`Selected text type is ${selectedTextType}`);
+            loadText(selectedTextType);
+            
+
+            
+            
+
+        }
+    });
+
+    
+});
+
 
 
 
