@@ -18,6 +18,8 @@ const textTypeSelectBox = document.querySelector(".text-type-select-box");
 const timeSelectBox = document.querySelector(".time-select-box");
 const netWpmText = document.getElementById("net-wpm-text");
 const rawWpmText = document.getElementById("raw-wpm-text");
+const endResultBox = document.getElementById("end-result-box");
+const timeIsUpText = document.getElementById("time-is-up-text");
 
 const letterRegex = /^[\p{L}\p{N}\p{P}\p{S}\s]$/u;
 
@@ -187,7 +189,9 @@ hiddenTextInput.addEventListener("input", (event) => {
         finishTimeText.innerText = `Completed in ${elapsedTime} seconds.`;
         timer.style.display = "none";
         congrats.innerText = "Congratulations! You have completed the test in time!"
-        confetti({ count: 500, position: { x: window.innerWidth / 2, y: window.innerHeight / 2 } });
+        confetti({ count: 2500, position: { x: window.innerWidth / 2, y: window.innerHeight / 2 } });
+
+        endResultBox.showModal();
 
         const incorrectAmount = document.getElementsByClassName("incorrect").length;
         const correctAmount = document.getElementsByClassName("correct").length;
@@ -275,6 +279,7 @@ hiddenTextInput.addEventListener("keydown", (event) => {
             if (timeLeft <= 0) {
                 clearInterval(countdown);
                 timer.innerText = "Time is up!";
+                endResultBox.showModal();
 
                 const incorrectAmount = document.getElementsByClassName("incorrect").length;
                 const correctAmount = document.getElementsByClassName("correct").length;
@@ -288,6 +293,7 @@ hiddenTextInput.addEventListener("keydown", (event) => {
                 const netWpm = (Math.round((((totalAmount / 5) - (incorrectAmount / 5)) * 60) / selectedTime * 100))/100;
                 const rawWpm = Math.round((totalAmount / 5) * (60/selectedTime));
 
+                timeIsUpText.innerText = `Sorry, time is up :(`
                 scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount} (${percentage}%) Correct</p>`;
                 netWpmText.innerText = `Net Words per Minute (WPM): ${netWpm} [Incorrect words are not included]`;
                 rawWpmText.innerText = `Raw Words per Minute (WPM): ${rawWpm} [All keystrokes are calculated]`;
@@ -321,3 +327,4 @@ textTypeButtons.forEach((button) => {
         }
     });
 });
+

@@ -189,3 +189,27 @@ a {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
+
+
+
+#end-result-box {
+    width: 40%;
+    height: 55%;
+    background-color: rgb(44, 44, 44);
+    border: none;
+    border-radius: 20px;
+    color: whitesmoke;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 
+                0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    
+}
+
+#end-result-box h2 {
+    font-size: 30px;
+    font-weight: bolder;
+    color: #e2b714;
+}
+
+#end-result-box p {
+    font-size: large;
+}

@@ -35,20 +35,28 @@
             <button class="text-type-buttons">Random Words</button>
         </div>
 
-        <p id="congrats"></p>
+        
         <p id="timer"></p>
         <p id="start-typing-text"><i>Start Typing to Begin...</i></p>
          
-        <div id="text-container">
-
-        </div>
+        <div id="text-container"></div>
          
         <input type="text" id="hidden-text-input" autofocus autocomplete="off">
-        <p id="end-text"></p>
-        <p id="finish-time-text"></p>
-        <p id="net-wpm-text"></p>
-        <p id="raw-wpm-text"></p>
-        <p id="scoreboard"></p>
+
+        <dialog id="end-result-box">
+            <h2>Scoreboard</h2>
+            <hr>
+            <p id="congrats"></p>
+            <p id="time-is-up-text"></p>
+            <p id="end-text"></p>
+            <p id="finish-time-text"></p>
+            <p id="net-wpm-text"></p>
+            <p id="raw-wpm-text"></p>
+            <p id="scoreboard"></p>
+            <button id="restart-button">Play Again</button>
+        </dialog>
+
+        
         <button id="restart-button">Restart Test</button>
 
     </main>
