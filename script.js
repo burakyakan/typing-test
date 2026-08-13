@@ -1,7 +1,5 @@
 //TO-DO
-// * localStorage ile en son kullanılan süre ayarı kaydedilsin ve hep onda başlasın
-// * Pop-over ile metin üstüne scoreboard bas.
-// * Önceki yanlışlara kadar geri gidip onu temizleyebilme olmalı.
+// * Önceki yanlışlara kadar geri gidip onu temizleyebilme olmalı. ---> ÇALIŞMIYOR!!!
 
 const textContainer = document.getElementById("text-container");
 const hiddenTextInput = document.getElementById("hidden-text-input");
@@ -25,8 +23,8 @@ const letterRegex = /^[\p{L}\p{N}\p{P}\p{S}\s]$/u;
 
 let pressCount = 0;
 let finishTime;
-let selectedTime = 30;
-let selectedTextType = "Quotes";
+let selectedTime = parseInt(localStorage.getItem("selectedTime"), 10) || 30;
+let selectedTextType = localStorage.getItem("selectedTextType") || "Quotes";
 let timeLeft = selectedTime;
 let countdown;
 let elapsedTime = 0;
@@ -140,6 +138,23 @@ async function loadText(textType){
 
 window.addEventListener("load", () => {
     hiddenTextInput.focus();
+
+    textTypeButtons.forEach((btn) => {
+        if (btn.textContent === selectedTextType) {
+            btn.classList.add("active");
+        } else {
+            btn.classList.remove("active");
+        }
+    })
+
+    timeButtons.forEach((btn) => {
+        if (parseInt(btn.textContent, 10) === selectedTime) {
+            btn.classList.add("active");
+        } else {
+            btn.classList.remove("active");
+        }
+    })
+
     loadText(selectedTextType); 
 });
 
@@ -234,23 +249,6 @@ restartButton.addEventListener("click", () => {
     location.reload();
 });
 
-timeButtons.forEach((button) => {
-    
-    button.addEventListener("click", () => {
-        
-        if (pressCount > 0 || hiddenTextInput.readOnly){
-            return;
-
-        }   else { 
-            timeButtons.forEach((btn) => btn.classList.remove("active"));
-            button.classList.add("active");
-            selectedTime = parseInt(button.textContent, 10);
-            console.log(`Selected time is ${selectedTime}`);
-            timeLeft = selectedTime;
-        }
-    });
-});
-
 console.log(`Time left is ${timeLeft}`);
 
 hiddenTextInput.addEventListener("keydown", (event) => {
@@ -313,6 +311,24 @@ hiddenTextInput.addEventListener("keydown", (event) => {
     }
 })
 
+timeButtons.forEach((button) => {
+    
+    button.addEventListener("click", () => {
+        
+        if (pressCount > 0 || hiddenTextInput.readOnly){
+            return;
+
+        }   else { 
+            timeButtons.forEach((btn) => btn.classList.remove("active"));
+            button.classList.add("active");
+            selectedTime = parseInt(button.textContent, 10);
+            localStorage.setItem("selectedTime", selectedTime);
+            console.log(`Selected time is ${selectedTime}`);
+            timeLeft = selectedTime;
+        }
+    });
+});
+
 textTypeButtons.forEach((button) => {
     button.addEventListener("click", () => {
         if (pressCount > 0 || hiddenTextInput.readOnly){
@@ -322,6 +338,7 @@ textTypeButtons.forEach((button) => {
             textTypeButtons.forEach((btn) => btn.classList.remove("active"));
             button.classList.add("active");
             selectedTextType = button.textContent;
+            localStorage.setItem("selectedTextType", selectedTextType);
             console.log(`Selected text type is ${selectedTextType}`);
             loadText(selectedTextType); 
         }
