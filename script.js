@@ -35,313 +35,311 @@ let currentIndex = 0;
 
 function updateCaret() {
 
-    letters.forEach(letter => letter.classList.remove("current-caret"));
-    
-    if (letters[currentIndex]) {
-        letters[currentIndex].classList.add("current-caret");
-    }
+  letters.forEach(letter => letter.classList.remove("current-caret"));
+
+  if (letters[currentIndex]) {
+    letters[currentIndex].classList.add("current-caret");
+  }
 }
 
-async function getQuotesText(){
-    try {
-        
-        const url = `/texts/quotes/english.json`;
-        const response = await fetch(url);
-        const textData = await response.json();
+async function getQuotesText() {
+  try {
 
-        const textArray = textData.quotes;
+    const url = `/texts/quotes/english.json`;
+    const response = await fetch(url);
+    const textData = await response.json();
 
-        const randomTextIndex = Math.floor(Math.random() * textArray.length);
-        const loadedText = textArray[randomTextIndex].text;
-        const loadedTextSource = textArray[randomTextIndex].source;
-        const loadedTextLength = textArray[randomTextIndex].length;
-        const loadedTextID = textArray[randomTextIndex].id;
+    const textArray = textData.quotes;
 
-        console.log(`Loaded Text is: ${loadedText}`);
-        console.log(`Source: ${loadedTextSource}, Length: ${loadedTextLength}, ID: ${loadedTextID}`);
+    const randomTextIndex = Math.floor(Math.random() * textArray.length);
+    const loadedText = textArray[randomTextIndex].text;
+    const loadedTextSource = textArray[randomTextIndex].source;
+    const loadedTextLength = textArray[randomTextIndex].length;
+    const loadedTextID = textArray[randomTextIndex].id;
 
-        return loadedText;
+    console.log(`Loaded Text is: ${loadedText}`);
+    console.log(`Source: ${loadedTextSource}, Length: ${loadedTextLength}, ID: ${loadedTextID}`);
 
-    } catch (error) {
-        console.error(error);
-    }
-}
+    return loadedText;
 
-
-async function getRandomWordsText(){
-    try {
-        const url = `/texts/words/english_1k.json`;
-        const response = await fetch(url);
-        const textData = await response.json();
-        const selectedWordsArray = [];
-        let selectedRandomWord;
-
-        const textArray = textData.words;
-
-        for (let i = 0; i < 30; i++) {
-            const randomTextIndex = Math.floor(Math.random() * textArray.length);
-            selectedRandomWord = textArray[randomTextIndex];
-
-            selectedWordsArray.push(selectedRandomWord);
-            console.log(`Selected Random Word is: ${selectedRandomWord}`);
-        }
-
-        return selectedWordsArray.join(" ").trim();
-
-    } catch (error) {
-        console.error(error);
-    }
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 
-function renderWords(text){
-    const wordsArray = text.split(' ');
+async function getRandomWordsText() {
+  try {
+    const url = `/texts/words/english_1k.json`;
+    const response = await fetch(url);
+    const textData = await response.json();
+    const selectedWordsArray = [];
+    let selectedRandomWord;
 
-    textContainer.innerHTML = wordsArray.map((word, index) => {
-        let lettersSplitted = word.split('').map(letter => { 
-            return `<span class="letter">${letter}</span>`;
+    const textArray = textData.words;
+
+    for (let i = 0; i < 30; i++) {
+      const randomTextIndex = Math.floor(Math.random() * textArray.length);
+      selectedRandomWord = textArray[randomTextIndex];
+
+      selectedWordsArray.push(selectedRandomWord);
+      console.log(`Selected Random Word is: ${selectedRandomWord}`);
+    }
+
+    return selectedWordsArray.join(" ").trim();
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+function renderWords(text) {
+  const wordsArray = text.split(' ');
+
+  textContainer.innerHTML = wordsArray.map((word, index) => {
+    let lettersSplitted = word.split('').map(letter => {
+      return `<span class="letter">${letter}</span>`;
     }).join("");
 
     if (index < wordsArray.length - 1) {
-        lettersSplitted += `<span class="letter">&nbsp;</span>`;
+      lettersSplitted += `<span class="letter">&nbsp;</span>`;
     }
 
     return `<div class="word">${lettersSplitted}</div>`;
-    }).join("");
+  }).join("");
 
-    letters = document.querySelectorAll(".letter");
+  letters = document.querySelectorAll(".letter");
 
-    updateCaret();
+  updateCaret();
 }
 
-async function loadText(textType){
+async function loadText(textType) {
 
-    let selectedText;
+  let selectedText;
 
-    if (textType === "Quotes") {
-        selectedText =  await getQuotesText();
+  if (textType === "Quotes") {
+    selectedText = await getQuotesText();
 
-    } else if (textType === "Random Words") {
-        selectedText =  await getRandomWordsText();
+  } else if (textType === "Random Words") {
+    selectedText = await getRandomWordsText();
 
-    } else {
-        selectedText =  await getQuotesText();
-    }
-    
-    
-    console.log(`Selected Text is ${selectedText}`);
+  } else {
+    selectedText = await getQuotesText();
+  }
 
-    renderWords(selectedText);
+
+  console.log(`Selected Text is ${selectedText}`);
+
+  renderWords(selectedText);
 }
 
 //eski kod bitiş
 
 window.addEventListener("load", () => {
-    hiddenTextInput.focus();
+  hiddenTextInput.focus();
 
-    textTypeButtons.forEach((btn) => {
-        if (btn.textContent === selectedTextType) {
-            btn.classList.add("active");
-        } else {
-            btn.classList.remove("active");
-        }
-    })
+  textTypeButtons.forEach((btn) => {
+    if (btn.textContent === selectedTextType) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  })
 
-    timeButtons.forEach((btn) => {
-        if (parseInt(btn.textContent, 10) === selectedTime) {
-            btn.classList.add("active");
-        } else {
-            btn.classList.remove("active");
-        }
-    })
+  timeButtons.forEach((btn) => {
+    if (parseInt(btn.textContent, 10) === selectedTime) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  })
 
-    loadText(selectedTextType); 
+  loadText(selectedTextType);
 });
 
 document.addEventListener("click", () => {
-    hiddenTextInput.focus();
+  hiddenTextInput.focus();
 });
 
 textContainer.addEventListener("click", () => {
-    hiddenTextInput.focus();
+  hiddenTextInput.focus();
 })
 
 hiddenTextInput.addEventListener("input", (event) => {
-    if (hiddenTextInput.readOnly) {
-        return;
-    }
-    
-    startTypingText.style.display = "none";
-    const inputValue = hiddenTextInput.value;
-    const currentLetterSpan = letters[currentIndex];
-    
-    if (inputValue.length > currentIndex) {
+  if (hiddenTextInput.readOnly) {
+    return;
+  }
+
+  startTypingText.style.display = "none";
+  const inputValue = hiddenTextInput.value;
+  const currentLetterSpan = letters[currentIndex];
+  console.log("input value:", inputValue);
+  if (inputValue.length > currentIndex) {
     const typedChar = inputValue[currentIndex];
     const targetChar = currentLetterSpan.innerText;
 
-        if (typedChar === targetChar || (typedChar === " " && targetChar === "\u00A0")) {
-            currentLetterSpan.classList.add("correct");
-        } else {
-            currentLetterSpan.classList.add("incorrect");
-        }
+    if (typedChar === targetChar || (typedChar === " " && targetChar === "\u00A0")) {
+      currentLetterSpan.classList.add("correct");
+    } else {
+      currentLetterSpan.classList.add("incorrect");
+    }
 
     currentIndex++;
 
     updateCaret();
 
-    if (letters.length === currentIndex){
+    if (letters.length === currentIndex) {
 
-        clearInterval(countdown);
+      clearInterval(countdown);
 
-        elapsedTime = selectedTime - timeLeft;
+      elapsedTime = selectedTime - timeLeft;
 
-        hiddenTextInput.readOnly = true; 
+      hiddenTextInput.readOnly = true;
 
-        //buttonBox.style.pointerEvents = "none";
+      textContainer.style.filter = "blur(3px)";
+      endText.innerText = "You have completed the test."
+      finishTimeText.innerText = `Completed in ${elapsedTime} seconds.`;
+      timer.style.display = "none";
+      congrats.innerText = "Congratulations! You have completed the test in time!"
+      confetti({ count: 2500, position: { x: window.innerWidth / 2, y: window.innerHeight / 2 } });
 
-        textContainer.style.filter = "blur(3px)";
-        endText.innerText = "You have completed the test."
-        finishTimeText.innerText = `Completed in ${elapsedTime} seconds.`;
-        timer.style.display = "none";
-        congrats.innerText = "Congratulations! You have completed the test in time!"
-        confetti({ count: 2500, position: { x: window.innerWidth / 2, y: window.innerHeight / 2 } });
+      endResultBox.showModal();
 
-        endResultBox.showModal();
+      const incorrectAmount = document.getElementsByClassName("incorrect").length;
+      const correctAmount = document.getElementsByClassName("correct").length;
+      const totalAmount = letters.length;
+      const netWpm = Math.round((((totalAmount / 5) - (incorrectAmount / 5)) * 60) / selectedTime);
+      const rawWpm = Math.round((totalAmount / 5) * (60 / selectedTime));
 
-        const incorrectAmount = document.getElementsByClassName("incorrect").length;
-        const correctAmount = document.getElementsByClassName("correct").length;
-        const totalAmount = letters.length;
-        const netWpm = Math.round((((totalAmount / 5) - (incorrectAmount / 5)) * 60) / selectedTime);
-        const rawWpm = Math.round((totalAmount / 5) * (60/selectedTime));
+      percentage = Math.round((correctAmount * 100) / totalAmount);
+      scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount} (${percentage}%) Correct</p>`;
+      netWpmText.innerText = `Net Words per Minute (WPM): ${netWpm} [Incorrect words are not included]`;
+      rawWpmText.innerText = `Raw Words per Minute (WPM): ${rawWpm} [All keystrokes are calculated]`;
 
-        percentage = Math.round((correctAmount * 100) / totalAmount);
-        scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount} (${percentage}%) Correct</p>`;
-        netWpmText.innerText = `Net Words per Minute (WPM): ${netWpm} [Incorrect words are not included]`;
-        rawWpmText.innerText = `Raw Words per Minute (WPM): ${rawWpm} [All keystrokes are calculated]`;
-
-        hiddenTextInput.readOnly = true;
-    } 
-
+      hiddenTextInput.readOnly = true;
     }
+
+  }
 })
 
 hiddenTextInput.addEventListener("keydown", (event) => {
-    if (event.key === "Backspace"){
+  if (event.key === "Backspace") {
 
-        if (timeLeft < 0 || currentIndex === letters.length || hiddenTextInput.readOnly) {
-            event.preventDefault();
-            return;
-        }
-
-        if ((currentIndex > 0) && (letters[currentIndex -1].classList.contains("incorrect")) ) {
-            currentIndex--;
-
-            const previousLetterSpan = letters[currentIndex];
-            previousLetterSpan.classList.remove("correct", "incorrect");
-            updateCaret();
-        } else {
-            event.preventDefault();
-        }
+    if (timeLeft < 0 || currentIndex === letters.length || hiddenTextInput.readOnly) {
+      event.preventDefault();
+      return;
     }
+
+    if ((currentIndex > 0) && (letters[currentIndex - 1].classList.contains("incorrect"))) { // && (letters[currentIndex - 1].classList.contains("incorrect")) kısmını kaldırırsak
+      currentIndex--;                                                                        // Her şey silinebilir oluyor ama doğru yazılan kelimeler de silinebilir oluyor
+
+      const previousLetterSpan = letters[currentIndex];
+      previousLetterSpan.classList.remove("correct", "incorrect");
+      updateCaret();
+    } else {
+      event.preventDefault();
+    }
+  }
 })
 
 restartButton.addEventListener("click", () => {
-    location.reload();
+  location.reload();
 });
 
 console.log(`Time left is ${timeLeft}`);
 
 hiddenTextInput.addEventListener("keydown", (event) => {
 
-    if (hiddenTextInput.readOnly) {
-        event.preventDefault(); 
-        return; 
+  if (hiddenTextInput.readOnly) {
+    event.preventDefault();
+    return;
+  }
+
+  if (event.key.length !== 1) {
+    return;
+  }
+
+  if (event.key === " " || letterRegex.test(event.key)) {
+    textTypeSelectBox.style.pointerEvents = 'none';
+    timeSelectBox.style.pointerEvents = 'none';
+    timer.style.color = "#e2b714";
+    timer.style.fontWeight = "bold";
+    timer.style.fontSize = "30px";
+    timer.innerText = `${timeLeft}`;
+    if (pressCount === 0) {
+      pressCount++;
+
+
+      countdown = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          timer.innerText = "Time is up!";
+          endResultBox.showModal();
+
+          const incorrectAmount = document.getElementsByClassName("incorrect").length;
+          const correctAmount = document.getElementsByClassName("correct").length;
+          const totalAmount = letters.length;
+          percentage = Math.round((correctAmount * 100) / totalAmount);
+          scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount} (${percentage}%) Correct</p>`;
+
+          hiddenTextInput.readOnly = true;
+          textContainer.style.filter = "blur(3px)";
+
+          const netWpm = (Math.round((((totalAmount / 5) - (incorrectAmount / 5)) * 60) / selectedTime * 100)) / 100;
+          const rawWpm = Math.round((totalAmount / 5) * (60 / selectedTime));
+
+          timeIsUpText.innerText = `Sorry, time is up :(`
+          scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount} (${percentage}%) Correct</p>`;
+          netWpmText.innerText = `Net Words per Minute (WPM): ${netWpm} [Incorrect words are not included]`;
+          rawWpmText.innerText = `Raw Words per Minute (WPM): ${rawWpm} [All keystrokes are calculated]`;
+          // Bu kısmı "pop-over'lar" ile yap.
+
+        } else {
+          timeLeft--;
+          timer.innerText = `${timeLeft}`
+        }
+
+      }, 1000);
+
     }
 
-    if (event.key.length !== 1) {
-        return;
-    }
-
-    if (event.key === " " || letterRegex.test(event.key)){
-        textTypeSelectBox.style.pointerEvents = 'none';
-        timeSelectBox.style.pointerEvents = 'none';
-        timer.style.color = "#e2b714";
-        timer.style.fontWeight = "bold";
-        timer.style.fontSize = "30px";
-        timer.innerText = `${timeLeft}`;
-        if (pressCount === 0){
-            pressCount++;
-            
-
-            countdown = setInterval( () => {
-            if (timeLeft <= 0) {
-                clearInterval(countdown);
-                timer.innerText = "Time is up!";
-                endResultBox.showModal();
-
-                const incorrectAmount = document.getElementsByClassName("incorrect").length;
-                const correctAmount = document.getElementsByClassName("correct").length;
-                const totalAmount = letters.length;
-                percentage = Math.round((correctAmount * 100) / totalAmount);
-                scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount} (${percentage}%) Correct</p>`;
-                
-                hiddenTextInput.readOnly = true;
-                textContainer.style.filter = "blur(3px)";
-        
-                const netWpm = (Math.round((((totalAmount / 5) - (incorrectAmount / 5)) * 60) / selectedTime * 100))/100;
-                const rawWpm = Math.round((totalAmount / 5) * (60/selectedTime));
-
-                timeIsUpText.innerText = `Sorry, time is up :(`
-                scoreboard.innerHTML = `<p id="scoreboard">${correctAmount}/${totalAmount} (${percentage}%) Correct</p>`;
-                netWpmText.innerText = `Net Words per Minute (WPM): ${netWpm} [Incorrect words are not included]`;
-                rawWpmText.innerText = `Raw Words per Minute (WPM): ${rawWpm} [All keystrokes are calculated]`;
-                // Bu kısmı "pop-over'lar" ile yap.
-
-            } else {
-                timeLeft--;
-                timer.innerText = `${timeLeft}`
-            }
-
-        }, 1000);
-
-        } 
-
-    } else {
-        event.preventDefault();
-    }
+  } else {
+    event.preventDefault();
+  }
 })
 
 timeButtons.forEach((button) => {
-    
-    button.addEventListener("click", () => {
-        
-        if (pressCount > 0 || hiddenTextInput.readOnly){
-            return;
 
-        }   else { 
-            timeButtons.forEach((btn) => btn.classList.remove("active"));
-            button.classList.add("active");
-            selectedTime = parseInt(button.textContent, 10);
-            localStorage.setItem("selectedTime", selectedTime);
-            console.log(`Selected time is ${selectedTime}`);
-            timeLeft = selectedTime;
-        }
-    });
+  button.addEventListener("click", () => {
+
+    if (pressCount > 0 || hiddenTextInput.readOnly) {
+      return;
+
+    } else {
+      timeButtons.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+      selectedTime = parseInt(button.textContent, 10);
+      localStorage.setItem("selectedTime", selectedTime);
+      console.log(`Selected time is ${selectedTime}`);
+      timeLeft = selectedTime;
+    }
+  });
 });
 
 textTypeButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-        if (pressCount > 0 || hiddenTextInput.readOnly){
-            return;
+  button.addEventListener("click", () => {
+    if (pressCount > 0 || hiddenTextInput.readOnly) {
+      return;
 
-        } else { 
-            textTypeButtons.forEach((btn) => btn.classList.remove("active"));
-            button.classList.add("active");
-            selectedTextType = button.textContent;
-            localStorage.setItem("selectedTextType", selectedTextType);
-            console.log(`Selected text type is ${selectedTextType}`);
-            loadText(selectedTextType); 
-        }
-    });
+    } else {
+      textTypeButtons.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+      selectedTextType = button.textContent;
+      localStorage.setItem("selectedTextType", selectedTextType);
+      console.log(`Selected text type is ${selectedTextType}`);
+      loadText(selectedTextType);
+    }
+  });
 });
 
